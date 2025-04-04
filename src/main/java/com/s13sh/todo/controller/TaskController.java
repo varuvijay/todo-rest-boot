@@ -25,4 +25,11 @@ public class TaskController {
                 .body(taskService.createTask(taskRequest, sessionId));
     }
 
+    @GetMapping("/")
+    public ResponseEntity< Object> getAllTask(@RequestHeader("X-Session-ID") String sessionId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getALlTask( sessionId));
+    }
+
 }

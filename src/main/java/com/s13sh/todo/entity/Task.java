@@ -3,11 +3,13 @@ package com.s13sh.todo.entity;
 import com.s13sh.todo.dto.TaskRequest;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Task {
 
     @Id
@@ -38,4 +40,6 @@ public class Task {
     }
 
 
+    public Task(Task task) {
+    }
 }

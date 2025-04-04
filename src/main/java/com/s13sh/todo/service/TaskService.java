@@ -6,4 +6,6 @@ import java.util.Map;
 
 public interface TaskService {
     Map<String, Object> createTask(TaskRequest taskRequest, String sessionId);
+
+    Object getALlTask(String sessionId);
 }
