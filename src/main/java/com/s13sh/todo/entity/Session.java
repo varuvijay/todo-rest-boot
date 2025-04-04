@@ -11,22 +11,34 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 public class Session {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    @Column(name = "session_id", unique = true, nullable = false)
-    String session_id;
-    @OneToOne
-    @JoinColumn(name = "user_id" )
-    private User user;
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String sessionId;
+
+
+    private java.lang.Long userId;
+
     @CreationTimestamp
     private LocalDateTime created_at;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SessionStatus status;
 
-    public Session(){
+    // Default constructor
+    public Session() {
 
-    }hunhu
+    }
 
+
+
+    public Session(String id, java.lang.Long id1, SessionStatus sessionStatus) {
+        this.sessionId = id;
+        this.userId = id1;
+        this.status = sessionStatus;
+    }
 }
