@@ -10,9 +10,11 @@ import com.s13sh.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,8 +59,52 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    @Override
+    public Object getTaskByid(Long id, String sessionId) {
+        return sessionRepository.findBySessionId(sessionId)
+                .filter(session -> session.getStatus().equals(SessionStatus.active))
+                .map(session -> {
+                    return taskRepository.findByIdAndUserId(id, session.getUserId())
+                            .orElseThrow(() -> new InvalidException("Task not found for this user"));
+                })
+                .orElseThrow(() -> new InvalidException("Invalid session id"));
+    }
 
-}
+    @Override
+    public Object updateTask(TaskRequest taskRequest, String sessionId, Long id) {
+        return sessionRepository.findBySessionId(sessionId)
+                .filter(session -> session.getStatus().equals(SessionStatus.active))
+                .map(session -> {
+                Task  task =(Task) taskRepository.findByIdAndUserId(id, session.getUserId())
+                            .orElseThrow(() -> new InvalidException("Task not found for this user"));
+                task.setUpdatedAt(LocalDateTime.now());
+                task.setName(taskRequest.getName());
+                task.setStatus(taskRequest.getStatus());
+                task.setDescription(taskRequest.getDescription());
+                    System.out.println(task);
+                return taskRepository.save(task);
+
+
+                })
+                .orElseThrow(() -> new InvalidException("Invalid session id or session not found"));
+    }
+
+    @Override
+    public Object deleteTask(String sessionId, Long id) {
+        return sessionRepository.findBySessionId(sessionId)
+                .filter(session -> session.getStatus().equals(SessionStatus.active))
+                .map(session -> {
+                     Task task = (Task) taskRepository.findByIdAndUserId(id, session.getUserId())
+                            .orElseThrow(() -> new InvalidException("Task not found for this user"));
+                     taskRepository.delete(task);
+                     return Map.of("message","the taask has been deleted");
+                })
+                .orElseThrow(() -> new InvalidException("Invalid session id"));
+    }
+    }
+
+
+
 
 
 

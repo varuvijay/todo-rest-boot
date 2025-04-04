@@ -32,4 +32,25 @@ public class TaskController {
                 .body(taskService.getALlTask( sessionId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity< Object> getAllTask(@PathVariable Long id,@RequestHeader("X-Session-ID") String sessionId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getTaskByid(id, sessionId));
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Object> updateTask(@PathVariable Long id,@RequestBody TaskRequest taskRequest,@RequestHeader("X-Session-ID") String sessionId) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(taskService.updateTask(taskRequest, sessionId,id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteTask(@PathVariable Long id,@RequestHeader("X-Session-ID") String sessionId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.deleteTask(sessionId ,id));
+    }
+
 }

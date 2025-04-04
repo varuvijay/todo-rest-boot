@@ -8,4 +8,10 @@ public interface TaskService {
     Map<String, Object> createTask(TaskRequest taskRequest, String sessionId);
 
     Object getALlTask(String sessionId);
+
+    Object getTaskByid(Long id, String sessionId);
+
+    Object updateTask(TaskRequest taskRequest, String sessionId, Long id);
+
+    Object deleteTask(String sessionId, Long id);
 }

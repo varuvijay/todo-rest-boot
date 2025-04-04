@@ -14,7 +14,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private java.lang.Long id;
+    private Long id;
 
     private Long userId;
 
